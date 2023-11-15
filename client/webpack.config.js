@@ -18,8 +18,11 @@ module.exports = () => {
     plugins: [
       new HtmlWebpackPlugin({
         template: './src/index.html',
-        filename: 'index.html',
-        chunks: ['main'],
+        title: 'JATE'
+      }),
+      new InjectManifest({
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
       }),
       new WebpackPwaManifest({
         name: 'Text Editor',
@@ -35,10 +38,7 @@ module.exports = () => {
           },
         ],
       }),
-      new InjectManifest({
-        swSrc: './src-sw.js',
-        swDest: 'sw.js',
-      }),
+
     ],
 
     module: {
@@ -48,22 +48,22 @@ module.exports = () => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test:/\.m?js$/,
+          test: /\.m?js$/,
           exclude: /(node_modules)/,
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [
-                '@babel/preset-env', 
-                {
-                  plugins: [
-                    '@babel/plugin-proposal-class-properties'
-                  ]
-                }
-              ]
+              presets: ['@babel/preset-env'],
+
+
+              plugins:
+                ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-transform-runtime'],
+
             }
+
           }
         }
+
       ],
     },
   };
